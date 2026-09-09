@@ -1,27 +1,8 @@
-const express = require('express');
-const data = require('./data/data');
+const express = require("express");
+const itemsRouter = require("./routes/items.routes");
+
 const app = express();
-const handleController = require('./controllers/controller')
+app.use(express.json());
+app.use("/api/items", itemsRouter);
 
-app.post('/api/items',(req,res)=>{
-
-});
-
-app.get('/api/items',(req,res)=>{
-
-});
-
-app.get('/api/items/:id',(req,res)=>{
-
-});
-
-app.put('/api/items/:id',(req,res)=>{
-
-});
-app.patch('/api/items/:id/claim',(req,res)=>{
-
-});
-
-app.delete('/api/items/:id',(req,res)=>{
-
-});
+module.exports = app;

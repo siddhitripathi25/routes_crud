@@ -55,7 +55,27 @@ function getItems(req,res){
     
 }
 function getItemById(req,res){
-
+    const { itemName, type, place, date, contact } = req.body;
+    fs.readFile(dataPath, "utf-8", (err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Error Reading Data" });
+    }
+    const items = JSON.parse(data);
+    const item = items.findIndex((item) => item.id === req.params.id);
+    if (item === -1) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+    items[item] = {
+      ...items[item],
+      itemName,
+      type,
+      place,
+      date,
+      contact,
+    };
+    fs.writeFileSync(dataPath, JSON.stringify(items));
+    return res.status(200).json(items[item]);
+  });
 }
 function updateItem(req,res){
 
