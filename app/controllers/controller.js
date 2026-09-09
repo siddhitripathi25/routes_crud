@@ -33,7 +33,26 @@ function createItem(req,res){
     })
 }
 function getItems(req,res){
+    let {type,status,place} = req.query;
+    fs.readFile(filePath,'utf-8',(err,data)=>{
+        if (err){
+            return res.status(400).json({'error':'Error reading file'})
+        }
+        let data = JSON.parse(data)
+        let filteredArr;
+        if (type!=undefined){
+            filteredArr=data.filter((a)=>a.type.tolowercase()==type.tolowercase())
+        }
+        if (status!=undefined){
+            filteredArr=filteredArr.filter((b)=>a.status.tolowercase()==status.tolowercase())
+        }
+        if (place!=undefined){
+            filteredArr=filteredArr.filter((c)=>c.place.tolowercase()==place.tolowercase())
+        }
+        res.send(200).json({'message': 'Sent successfully'})
 
+    })
+    
 }
 function getItemById(req,res){
 
