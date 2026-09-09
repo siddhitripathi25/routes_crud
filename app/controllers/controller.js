@@ -56,8 +56,21 @@ function getItems(req,res){
     
 }
 function getItemById(req,res){
-    const { itemName, type, place, date, contact } = req.body;
     fs.readFile(filePath, "utf-8", (err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Error Reading Data" });
+    }
+    const items = JSON.parse(data);
+    const item = items.find((item) => item.id === req.params.id);
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+    return res.status(200).json(item);
+  });
+}
+function updateItem(req,res){
+    const { itemName, type, place, date, contact } = req.body;
+  fs.readFile(filePath, "utf-8", (err, data) => {
     if (err) {
       return res.status(400).json({ error: "Error Reading Data" });
     }
@@ -78,13 +91,39 @@ function getItemById(req,res){
     return res.status(200).json(items[item]);
   });
 }
-function updateItem(req,res){
-
-}
 function claimItem(req,res){
-
+    fs.readFile(filePath, "utf-8", (err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Error Reading Data" });
+    }
+    const items = JSON.parse(data);
+    const item = items.find((item) => item.id === req.params.id);
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+    if (item.status.toLowerCase() == "claimed") {
+      return res.status(409).json({ error: "Already Claimed" });
+    }
+    if (item.status.toLowerCase() == "open") {
+      item.status = "claimed";
+      fs.writeFileSync(filePath, JSON.stringify(items));
+      return res.status(200).json(item);
+    }
+  });
 }
 function deleteItem(req,res){
-
+    fs.readFile(filePath, "utf-8", (err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Error Reading Data" });
+    }
+    const items = JSON.parse(data);
+    const itemIndex = items.findIndex((item) => item.id === req.params.id);
+    if (itemIndex === -1) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+    items.splice(itemIndex, 1);
+    fs.writeFileSync(filePath, JSON.stringify(items));
+    return res.status(204).send();
+  });
 }
 module.exports = {createItem,getItems,getItemById,updateItem,claimItem,deleteItem}
