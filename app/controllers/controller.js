@@ -1,9 +1,10 @@
 const express = require('express');
-const data = require('./data/data');
+const data = require('../data/data');
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto');
 const filePath = path.join(__dirname,'../data/data.js')
+
 function createItem(req,res){
     let {itemName,type,place,date,contact} = req.body;
     const valide = ['lost','found']
@@ -28,7 +29,7 @@ function createItem(req,res){
         status: "open",
         };
         items.unshift(newItem);
-        fs.writeFileSync(dataPath, JSON.stringify(items));
+        fs.writeFileSync(filePath, JSON.stringify(items));
         return res.status(201).json(newItem);
     })
 }
@@ -38,25 +39,25 @@ function getItems(req,res){
         if (err){
             return res.status(400).json({'error':'Error reading file'})
         }
-        let data = JSON.parse(data)
+        let newdata = JSON.parse(data)
         let filteredArr;
         if (type!=undefined){
-            filteredArr=data.filter((a)=>a.type.tolowercase()==type.tolowercase())
+            filteredArr=newdata.filter((a)=>a.type.toLowerCase()==type.toLowerCase())
         }
         if (status!=undefined){
-            filteredArr=filteredArr.filter((b)=>a.status.tolowercase()==status.tolowercase())
+            filteredArr=filteredArr.filter((b)=>a.status.toLowerCase()==status.toLowerCase())
         }
         if (place!=undefined){
-            filteredArr=filteredArr.filter((c)=>c.place.tolowercase()==place.tolowercase())
+            filteredArr=filteredArr.filter((c)=>c.place.toLowerCase()==place.toLowerCase())
         }
-        res.send(200).json({'message': 'Sent successfully'})
+        res.status(200).json({'message': 'Sent successfully'})
 
     })
     
 }
 function getItemById(req,res){
     const { itemName, type, place, date, contact } = req.body;
-    fs.readFile(dataPath, "utf-8", (err, data) => {
+    fs.readFile(filePath, "utf-8", (err, data) => {
     if (err) {
       return res.status(400).json({ error: "Error Reading Data" });
     }
@@ -73,7 +74,7 @@ function getItemById(req,res){
       date,
       contact,
     };
-    fs.writeFileSync(dataPath, JSON.stringify(items));
+    fs.writeFileSync(filePath, JSON.stringify(items));
     return res.status(200).json(items[item]);
   });
 }
