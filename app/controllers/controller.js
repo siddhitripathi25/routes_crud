@@ -1,5 +1,5 @@
 const express = require('express');
-const data = require('../data/data');
+// const newdata = require('../data/data');
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto');
@@ -40,17 +40,17 @@ function getItems(req,res){
             return res.status(400).json({'error':'Error reading file'})
         }
         let newdata = JSON.parse(data)
-        let filteredArr;
+        let filteredArr = newdata;
         if (type!=undefined){
             filteredArr=newdata.filter((a)=>a.type.toLowerCase()==type.toLowerCase())
         }
         if (status!=undefined){
-            filteredArr=filteredArr.filter((b)=>a.status.toLowerCase()==status.toLowerCase())
+            filteredArr=filteredArr.filter((b)=>b.status.toLowerCase()==status.toLowerCase())
         }
         if (place!=undefined){
             filteredArr=filteredArr.filter((c)=>c.place.toLowerCase()==place.toLowerCase())
         }
-        res.status(200).json({'message': 'Sent successfully'})
+        res.status(200).json(filteredArr);
 
     })
     
