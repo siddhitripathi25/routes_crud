@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto');
-const filePath = path.join(__dirname,'../data/data.js')
+const filePath = path.join(__dirname,'../data/data.json')
 
 function createItem(req,res){
     let {itemName,type,place,date,contact} = req.body;

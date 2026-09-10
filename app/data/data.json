@@ -1,0 +1,20 @@
+[
+  {
+    "id": "a3f2c1",
+    "itemName": "Black leather wallet",
+    "type": "lost",
+    "place": "Library",
+    "date": "2026-09-05",
+    "contact": "zeeshan@college.edu",
+    "status": "open"
+  },
+  {
+    "id": "b7d4e2",
+    "itemName": "Blue water bottle",
+    "type": "found",
+    "place": "Cafeteria",
+    "date": "2026-09-06",
+    "contact": "rahul@college.edu",
+    "status": "open"
+  }
+]
