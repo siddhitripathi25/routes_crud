@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto');
-const filePath = path.join(__dirname,'../data/data.json')
+const filePath = path.join(__dirname,'../data/data.json') ///__dirname = ye jis file me ham hai uske folder ka path lake deta hai
 
 function createItem(req,res){
     let {itemName,type,place,date,contact} = req.body;
